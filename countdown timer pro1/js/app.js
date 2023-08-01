@@ -20,7 +20,7 @@ function clock() {
 }
 
 // initial call
-clock();
+// clock();
 
 setInterval(() => {
   clock();
