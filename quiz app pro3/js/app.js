@@ -27,9 +27,16 @@ const questions = [
 
 // function
 let index = 0;
+let total = questions.length;
+let right = 0,
+  wrong = 0;
 const queBox = document.getElementById("queBox");
 const optionInputs = document.querySelectorAll(".options");
 const loadQuestion = () => {
+  if (index === total) {
+    return endQuiz();
+  }
+  reset();
   const data = questions[index];
   queBox.innerHTML = `(${index + 1})${data.que}`;
   optionInputs[0].nextElementSibling.innerText = data.a;
@@ -41,17 +48,40 @@ const loadQuestion = () => {
 // submit button function
 
 const submitQuiz = () => {
+  const data = questions[index];
   const ans = getAnswers();
+  if (ans === data.correct) {
+    right++;
+  } else {
+    wrong++;
+  }
+  index++;
+  loadQuestion();
+  return;
 };
 
 const getAnswers = () => {
+  let answer;
   optionInputs.forEach((input) => {
     if (input.checked) {
-      console.log("yes");
-    } else {
-      console.log("no");
+      answer = input.value;
     }
   });
+  return answer;
+};
+
+// reseting the form function
+
+const reset = () => {
+  optionInputs.forEach((input) => {
+    input.checked = false;
+  });
+};
+
+const endQuiz = () => {
+  document.getElementById("box").innerHTML = `
+  <div style= "text-align:center"><h3> Thankyou for playing the quiz </h>
+  <h2>${right}, ${total} are correct</h2> `;
 };
 
 // intial call
